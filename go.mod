@@ -1,5 +1,6 @@
 module github.com/IamNator/IOT-based_wind_speed_and_direction_measuring_device
 
+// +heroku goVersion go1.17
 go 1.17
 
 require github.com/gin-gonic/gin v1.7.4
