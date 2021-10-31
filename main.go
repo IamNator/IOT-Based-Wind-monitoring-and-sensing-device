@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 )
 
 func main(){
@@ -14,5 +15,9 @@ func main(){
 	router.GET("/status", func(ctx *gin.Context) {
 		ctx.JSONP(200, "we are live!!")
 	})
-	_ = http.ListenAndServe(":3000", router)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	_ = http.ListenAndServe(":"+port, router)
 }
