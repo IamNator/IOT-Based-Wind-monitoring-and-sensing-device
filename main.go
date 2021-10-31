@@ -1,13 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"google.golang.org/protobuf/types/known/structpb"
 	"math/rand"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -71,11 +68,8 @@ func main(){
 				},
 			},
 		}
-		buf := strings.NewReader(str)
-		h := make(map[string]interface{})
-		_ = json.NewDecoder(buf).Decode(&h)
 
-		ctx.JSONP(200, h)
+		ctx.JSONP(200, str )
 	})
 
 	port := os.Getenv("PORT")
