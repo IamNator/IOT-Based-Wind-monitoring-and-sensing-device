@@ -3,10 +3,31 @@ package main
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/protobuf/types/known/structpb"
+	"math/rand"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
+
+
+type resp struct {
+	Status bool `json:"status"`
+	Code int `json:"code"`
+	Data data `json:"data"`
+}
+
+type data struct{
+	Current Values `json:"current"`
+	Log []Values `json:"log"`
+}
+
+type Values struct {
+	Speed int `json:"speed"`
+	Dir string `json:"dir"`
+	CreatedAt string `json:"created_at"`
+}
 
 func main(){
 
@@ -21,37 +42,38 @@ func main(){
 	})
 
 	router.GET("/get", func(ctx *gin.Context) {
-		str := `{
-  "status": true,
-  "code": 200,
-  "data": {
-      "current":  {
-          "speed": 34.89,
-          "dir": "56.00 degree north",
-          "created_at": "10:00 AM"
-      },
-      "log": [
-      {
-          "speed": 34.89,
-          "dir": "56.00 degree north",
-          "created_at": "10:00 AM"
-      },
-       {
-          "speed": 84.89,
-          "dir": "59.00 degree south",
-          "created_at": "9:45 AM"
-      },
-       {
-          "speed": 89.89,
-          "dir": "79.00 degree north",
-          "created_at": "8:00 AM"
-      }
-  ]
-  }
-}`
+
+		str := resp{
+			Status: true,
+			Code:   200,
+			Data:   data{
+				Current: Values{
+					Speed:     (rand.Int()%70),
+					Dir:       "North",
+					CreatedAt: time.Now().String(),
+				},
+				Log:     []Values{
+					{
+						Speed:     (rand.Int()%70),
+						Dir:       "North",
+						CreatedAt: time.Now().String(),
+					},
+					{
+						Speed:     (rand.Int()%70),
+						Dir:       "North",
+						CreatedAt: time.Now().Add(time.Minute * -5).String(),
+					},
+					{
+						Speed:     (rand.Int()%70),
+						Dir:       "North",
+						CreatedAt: time.Now().Add(time.Minute * -20).String(),
+					},
+				},
+			},
+		}
 		buf := strings.NewReader(str)
 		h := make(map[string]interface{})
-		json.NewDecoder(buf).Decode(&h)
+		_ = json.NewDecoder(buf).Decode(&h)
 
 		ctx.JSONP(200, h)
 	})
