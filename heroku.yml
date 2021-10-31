@@ -1,0 +1,8 @@
+# https://devcenter.heroku.com/articles/heroku-yml-build-manifest
+# Officially unsupported, but works.
+build:
+  languages:
+    - go
+
+run:
+  web: IOT-based_wind_speed_and_direction_measuring_device
