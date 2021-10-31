@@ -27,9 +27,6 @@ type Values struct {
 }
 
 func main(){
-
-
-
 	router := gin.Default()
 	router.Static("/static", "./static")
 	router.StaticFile("/favicon.ico", "./static/assets/img/favicon.png")
@@ -39,7 +36,7 @@ func main(){
 	})
 
 	router.GET("/get", func(ctx *gin.Context) {
-
+		timeLayout := "Wed Feb 25 11:06:39 PST 2015"
 		str := resp{
 			Status: true,
 			Code:   200,
@@ -47,23 +44,22 @@ func main(){
 				Current: Values{
 					Speed:     (rand.Int()%70),
 					Dir:       "North",
-					CreatedAt: time.Now().String(),
-				},
+					CreatedAt: time.Now().Format(timeLayout)				},
 				Log:     []Values{
 					{
 						Speed:     (rand.Int()%70),
 						Dir:       "North",
-						CreatedAt: time.Now().String(),
+						CreatedAt: time.Now().Format(timeLayout)	,
 					},
 					{
 						Speed:     (rand.Int()%70),
 						Dir:       "North",
-						CreatedAt: time.Now().Add(time.Minute * -5).String(),
+						CreatedAt: time.Now().Add(time.Minute * -5).Format(timeLayout)	,
 					},
 					{
 						Speed:     (rand.Int()%70),
 						Dir:       "North",
-						CreatedAt: time.Now().Add(time.Minute * -20).String(),
+						CreatedAt: time.Now().Add(time.Minute * -20).Format(timeLayout)	,
 					},
 				},
 			},
