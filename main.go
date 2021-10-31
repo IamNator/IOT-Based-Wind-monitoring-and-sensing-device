@@ -36,7 +36,7 @@ func main(){
 	})
 
 	router.GET("/get", func(ctx *gin.Context) {
-		timeLayout := "Wed Feb 25 11:06:39 PST 2015"
+		timeLayout := time.ANSIC
 		str := resp{
 			Status: true,
 			Code:   200,
@@ -44,7 +44,7 @@ func main(){
 				Current: Values{
 					Speed:     (rand.Int()%70),
 					Dir:       "North",
-					CreatedAt: time.Now().Format(timeLayout)				},
+					CreatedAt: time.Now().Format(time.ANSIC)},
 				Log:     []Values{
 					{
 						Speed:     (rand.Int()%70),
