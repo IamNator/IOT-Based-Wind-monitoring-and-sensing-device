@@ -29,7 +29,7 @@ func New(s *storage.Storage, env *environment.Env) Interface {
 
 func (h *Handler) Get(ctx *gin.Context) {
 
-	current, er := h.logStorage.FindRecent()
+	recentLog, er := h.logStorage.FindRecent()
 	if er != nil {
 		ctx.JSONP(422, er.Error())
 		return
@@ -46,9 +46,10 @@ func (h *Handler) Get(ctx *gin.Context) {
 		Code:   200,
 		Data: data{
 			Current: Log{
-				Speed:     current.Speed,
-				Dir:       current.Dir,
-				CreatedAt: current.CreatedAt.Format(TimeFormat),
+				ID:        recentLog.ID,
+				Speed:     recentLog.Speed,
+				Dir:       recentLog.Dir,
+				CreatedAt: recentLog.CreatedAt.Format(TimeFormat),
 			},
 			Log: ModelLogsToLogSlice(logs),
 		},
