@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"time"
-
 	"github.com/IamNator/iot-wind/model"
+	"github.com/IamNator/iot-wind/pkg/environment"
+	"github.com/pkg/errors"
 
 	"github.com/IamNator/iot-wind/storage"
 	"github.com/gin-gonic/gin"
@@ -11,16 +11,19 @@ import (
 
 type Handler struct {
 	logStorage storage.LogDatabase
+	env        *environment.Env
 }
 
 type Interface interface {
 	Get(ctx *gin.Context)
 	POST(ctx *gin.Context)
+	Delete(ctx *gin.Context)
 }
 
-func New(s *storage.Storage) Interface {
+func New(s *storage.Storage, env *environment.Env) Interface {
 	return &Handler{
 		logStorage: storage.NewLog(s),
+		env:        env,
 	}
 }
 
@@ -42,12 +45,12 @@ func (h *Handler) Get(ctx *gin.Context) {
 		Status: true,
 		Code:   200,
 		Data: data{
-			Current: Values{
+			Current: Log{
 				Speed:     current.Speed,
 				Dir:       current.Dir,
-				CreatedAt: current.CreatedAt.Format(time.Stamp),
+				CreatedAt: current.CreatedAt.Format(TimeFormat),
 			},
-			Log: logs,
+			Log: ModelLogsToLogSlice(logs),
 		},
 	}
 
@@ -67,4 +70,24 @@ func (h *Handler) POST(ctx *gin.Context) {
 	}
 
 	ctx.JSONP(201, "successfully created")
+}
+
+func (h *Handler) Delete(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ctx.JSONP(400, errors.New("id is required"))
+		return
+	}
+
+	secret := ctx.Param("secret")
+	if secret != h.env.Get("SECRET_KEY") {
+		ctx.JSONP(401, gin.H{"error": "unauthorized access"})
+	}
+
+	if er := h.logStorage.DeleteByID(id); er != nil {
+		ctx.JSONP(422, er.Error())
+		return
+	}
+
+	ctx.JSONP(201, "successfully deleted")
 }

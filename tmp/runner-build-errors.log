@@ -1,0 +1,2 @@
+handler/handler.go:6:2: no required module provides package github.com/pkg/errors; to add it:
+	go get github.com/pkg/errors

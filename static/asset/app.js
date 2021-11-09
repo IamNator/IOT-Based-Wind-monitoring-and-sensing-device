@@ -3,7 +3,7 @@ var requestOptions = {
     redirect: 'follow'
   };
   
-fetch("https://iotwind.herokuapp.com/get", requestOptions)
+fetch("/get", requestOptions)
     .then(function(response) {
         return response.json();
         console.log(data);

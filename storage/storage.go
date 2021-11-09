@@ -40,5 +40,5 @@ func New(env *environment.Env) *Storage {
 }
 
 func Migration(s *Storage) error {
-	return s.db.AutoMigrate(&model.Log{}).Error
+	return s.db.AutoMigrate(&model.Log{}).ModifyColumn("speed", "FLOAT").Error
 }

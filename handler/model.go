@@ -1,6 +1,10 @@
 package handler
 
-import "github.com/IamNator/iot-wind/model"
+import (
+	"time"
+
+	"github.com/IamNator/iot-wind/model"
+)
 
 type resp struct {
 	Status bool `json:"status"`
@@ -9,11 +13,26 @@ type resp struct {
 }
 
 type data struct {
-	Current Values       `json:"current"`
-	Log     []*model.Log `json:"log"`
+	Current Log   `json:"current"`
+	Log     []Log `json:"log"`
 }
 
-type Values struct {
+var TimeFormat = time.Stamp
+
+func ModelLogsToLogSlice(logs []*model.Log) []Log {
+	values := make([]Log, 0)
+	for _, l := range logs {
+		values = append(values, Log{
+			Speed:     l.Speed,
+			Dir:       l.Dir,
+			CreatedAt: l.CreatedAt.Format(TimeFormat),
+		})
+	} //
+
+	return values
+}
+
+type Log struct {
 	Speed     float32 `json:"speed"`
 	Dir       string  `json:"dir"`
 	CreatedAt string  `json:"created_at"`

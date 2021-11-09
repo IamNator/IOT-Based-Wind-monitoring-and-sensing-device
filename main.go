@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/IamNator/iot-wind/pkg/middleware"
+
 	"github.com/IamNator/iot-wind/handler"
 	"github.com/IamNator/iot-wind/pkg/environment"
 	"github.com/IamNator/iot-wind/storage"
@@ -20,15 +22,18 @@ func main() {
 	}
 	store := storage.New(env)
 	storage.Migration(store)
-	handlers := handler.New(store)
+	handlers := handler.New(store, env)
 	router := gin.Default()
+
+	router.Use(middleware.CORSMiddleware())
 
 	router.GET("/status", func(ctx *gin.Context) {
 		ctx.JSONP(200, "no excuses!!")
-	})
+	}) //
 
 	router.GET("/get", handlers.Get)
 	router.POST("/add", handlers.POST)
+	router.DELETE("/delete", handlers.POST)
 
 	router.Static("/static", "./static")
 	router.StaticFile("/favicon.ico", "./static/assets/img/favicon.png")

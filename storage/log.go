@@ -12,6 +12,9 @@ type LogDatabase interface {
 
 	//FindRecent returns the last created log
 	FindRecent() (*model.Log, error)
+
+	//DeleteByID deletes a log by id
+	DeleteByID(id string) error
 }
 
 //Log implements LogDatabase interface
@@ -55,4 +58,14 @@ func (l *Log) FindRecent() (*model.Log, error) {
 		return nil, result.Error
 	}
 	return log, nil
+}
+
+//DeleteByID deletes a log by id
+func (l *Log) DeleteByID(id string) error {
+
+	result := l.storage.db.Delete("id = ?", id)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
