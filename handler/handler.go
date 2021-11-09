@@ -54,7 +54,7 @@ func (h *Handler) Get(ctx *gin.Context) {
 		},
 	}
 
-	ctx.JSONP(200, gin.H{"message": str})
+	ctx.JSONP(200, gin.H{"message": str}) //
 }
 
 func (h *Handler) POST(ctx *gin.Context) {
