@@ -13,7 +13,7 @@ RUN apk --no-cache add tzdata
 RUN go version
 
 # creates working directory for program
-WORKDIR /go/src/github.com/iot
+WORKDIR /go/src/github.com/IamNator/iot
 
 # copies all program files specified directory in the container
 ADD . .
@@ -23,6 +23,7 @@ ADD . .
 #RUN go mod download
 RUN go get .
 RUN go get github.com/pilu/fresh
+RUN chmod +x scripts/startapp.sh
 
 CMD ["./scripts/startapp.sh"]
 
