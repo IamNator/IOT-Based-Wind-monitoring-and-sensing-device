@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -18,6 +19,7 @@ func main() {
 		panic(er.Error())
 	}
 	store := storage.New(env)
+	storage.Migration(store)
 	handlers := handler.New(store)
 	router := gin.Default()
 
@@ -37,5 +39,7 @@ func main() {
 		port = "3000"
 	}
 
+	log.Printf("serving on port :%s\n", port)
+	log.Printf("http://localhost:%s", port)
 	_ = http.ListenAndServe(":"+port, router)
 }

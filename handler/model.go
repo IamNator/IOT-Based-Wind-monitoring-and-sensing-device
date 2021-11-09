@@ -14,7 +14,7 @@ type data struct {
 }
 
 type Values struct {
-	Speed     int    `json:"speed"`
-	Dir       string `json:"dir"`
-	CreatedAt string `json:"created_at"`
+	Speed     float32 `json:"speed"`
+	Dir       string  `json:"dir"`
+	CreatedAt string  `json:"created_at"`
 }
