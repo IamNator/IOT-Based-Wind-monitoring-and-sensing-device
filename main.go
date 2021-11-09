@@ -34,7 +34,7 @@ func main() {
 	}) //
 
 	router.GET("/api/get", handlers.Get)
-	router.POST("/api/add", handlers.POST)
+	router.POST("/api/add", handlers.POST) //
 	router.DELETE("/api/delete", handlers.POST)
 
 	router.Static("/static", "./static")
