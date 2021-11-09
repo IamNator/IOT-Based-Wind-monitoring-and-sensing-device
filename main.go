@@ -33,9 +33,9 @@ func main() {
 		ctx.JSONP(200, "no excuses!!")
 	}) //
 
-	router.GET("/get", handlers.Get)
-	router.POST("/add", handlers.POST)
-	router.DELETE("/delete", handlers.POST)
+	router.GET("/api/get", handlers.Get)
+	router.POST("/api/add", handlers.POST)
+	router.DELETE("/api/delete", handlers.POST)
 
 	router.Static("/static", "./static")
 	router.StaticFile("/favicon.ico", "./static/assets/img/favicon.png")

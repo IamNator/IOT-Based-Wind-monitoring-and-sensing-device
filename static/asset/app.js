@@ -3,7 +3,7 @@ var requestOptions = {
     redirect: 'follow'
   };
   
-fetch("/get", requestOptions)
+fetch("/api/get", requestOptions)
     .then(function(response) {
         return response.json();
         console.log(data);
