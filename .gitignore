@@ -1,3 +1,5 @@
 .idea
 .env
 tmp
+docker-compose.yml
+Dockerfile
