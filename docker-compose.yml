@@ -12,4 +12,4 @@ services:
       - PORT=7000
       - TIME_ZONE=Africa/Lagos
     volumes:
-      - ./:/go/src/github.com/iot
+      - ./:/go/src/github.com/IamNator/iot

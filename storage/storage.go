@@ -1,16 +1,13 @@
 package storage
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/IamNator/iot-wind/model"
 
-	"gorm.io/driver/mysql"
-
 	"github.com/IamNator/iot-wind/pkg/environment"
-
-	"gorm.io/gorm"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 //Storage
@@ -26,10 +23,11 @@ type Storage struct {
 //contains the database connection object
 func New(env *environment.Env) *Storage {
 
-	db, err := gorm.Open(
-		mysql.Open(fmt.Sprintf("%s", env.Get("IOT_MYSQL_DSN"))),
-		&gorm.Config{},
-	)
+	dsn := env.Get("IOT_MYSQL_DSN")
+	db, err := gorm.Open("mysql", dsn)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
 
 	if err != nil {
 		log.Fatal(err)
@@ -42,5 +40,5 @@ func New(env *environment.Env) *Storage {
 }
 
 func Migration(s *Storage) error {
-	return s.db.AutoMigrate(&model.Log{})
+	return s.db.AutoMigrate(&model.Log{}).Error
 }
