@@ -21,7 +21,9 @@ func main() {
 		panic(er.Error())
 	}
 	store := storage.New(env)
-	storage.Migration(store)
+	if er := storage.Migration(store); er != nil {
+		panic(er.Error())
+	} //
 	handlers := handler.New(store, env)
 	router := gin.Default()
 
