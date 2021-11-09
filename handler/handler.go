@@ -3,10 +3,9 @@ package handler
 import (
 	"github.com/IamNator/iot-wind/model"
 	"github.com/IamNator/iot-wind/pkg/environment"
-	"github.com/pkg/errors"
-
 	"github.com/IamNator/iot-wind/storage"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
 type Handler struct {
@@ -37,7 +36,7 @@ func (h *Handler) Get(ctx *gin.Context) {
 
 	logs, err := h.logStorage.FindAllLogs(1, 105)
 	if err != nil {
-		ctx.JSONP(422, err.Error())
+		ctx.JSONP(422, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -55,22 +54,30 @@ func (h *Handler) Get(ctx *gin.Context) {
 		},
 	}
 
-	ctx.JSONP(200, str)
+	ctx.JSONP(200, gin.H{"message": str})
 }
 
 func (h *Handler) POST(ctx *gin.Context) {
-	var log model.Log
-	if er := ctx.BindJSON(&log); er != nil {
-		ctx.JSONP(400, er.Error())
+	var log Log
+	if er := ctx.ShouldBindQuery(&log); er != nil {
+		ctx.JSONP(400, gin.H{"error": er.Error()})
 		return
 	}
 
-	if er := h.logStorage.CreateLog(log); er != nil {
-		ctx.JSONP(422, er.Error())
+	if log.Speed == 0 || log.Dir == "" {
+		ctx.JSONP(400, gin.H{"error": "speed and dir are required"})
 		return
 	}
 
-	ctx.JSONP(201, "successfully created")
+	if er := h.logStorage.CreateLog(model.Log{
+		Speed: log.Speed,
+		Dir:   log.Dir, //
+	}); er != nil {
+		ctx.JSONP(422, gin.H{"error": er.Error()})
+		return
+	}
+
+	ctx.JSONP(201, gin.H{"message": "successfully created"})
 }
 
 func (h *Handler) Delete(ctx *gin.Context) {
@@ -86,9 +93,9 @@ func (h *Handler) Delete(ctx *gin.Context) {
 	}
 
 	if er := h.logStorage.DeleteByID(id); er != nil {
-		ctx.JSONP(422, er.Error())
+		ctx.JSONP(422, gin.H{"error": er.Error()})
 		return
 	}
 
-	ctx.JSONP(201, "successfully deleted")
+	ctx.JSONP(201, gin.H{"message": "successfully deleted"})
 }

@@ -31,10 +31,10 @@ func main() {
 
 	router.GET("/status", func(ctx *gin.Context) {
 		ctx.JSONP(200, "no excuses!!")
-	}) //
+	}) //d
 
 	router.GET("/api/get", handlers.Get)
-	router.POST("/api/add", handlers.POST) //
+	router.POST("/api/add", handlers.POST)
 	router.DELETE("/api/delete", handlers.POST)
 
 	router.Static("/static", "./static")

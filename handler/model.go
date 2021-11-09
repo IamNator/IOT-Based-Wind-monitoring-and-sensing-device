@@ -34,8 +34,8 @@ func ModelLogsToLogSlice(logs []*model.Log) []Log {
 }
 
 type Log struct {
-	ID        uint    `json:"id"`
-	Speed     float32 `json:"speed"`
-	Dir       string  `json:"dir"`
-	CreatedAt string  `json:"created_at"`
+	ID        uint    `form:"id" json:"id"`
+	Speed     float32 `form:"speed" json:"speed"`
+	Dir       string  `form:"dir" json:"dir"`
+	CreatedAt string  `form:"created_at" json:"created_at"`
 }
