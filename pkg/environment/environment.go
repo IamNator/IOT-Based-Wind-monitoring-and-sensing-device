@@ -15,7 +15,7 @@ type Env struct{}
 func New() (*Env, error) {
 	err := godotenv.Load()
 	if err != nil {
-		return nil, err
+		//return nil, err
 	}
 	return &Env{}, nil
 }
