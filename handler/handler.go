@@ -64,8 +64,8 @@ func (h *Handler) POST(ctx *gin.Context) {
 		return
 	}
 
-	if log.Speed == 0 || log.Dir == "" {
-		ctx.JSONP(400, gin.H{"error": "speed and dir are required"})
+	if log.Dir == "" {
+		ctx.JSONP(400, gin.H{"error": "dir is required"})
 		return
 	}
 
